@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>このサイトについて｜Emフロンティア殿堂</title>
+<meta name="description" content="Emフロンティア殿堂の目的、記録の申請の方法、運営者について。個人が運営する非公式のファンサイトです。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpolygon points='8,2 20,2 26,8 26,20 20,26 8,26 2,20 2,8' fill='%233CFF9A'/%3E%3Cpolygon points='10,8 18,8 20,10 20,18 18,20 10,20 8,18 8,10' fill='%23E6FFF0' fill-opacity='0.45'/%3E%3Cpath d='M8 2l2 6M20 2l-2 6M26 8l-6 2M26 20l-6-2M20 26l-2-6M8 26l2-6M2 20l6-2M2 8l6 2' stroke='%2306231A' stroke-width='1' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=DotGothic16&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="./">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><polygon points="8,2 20,2 26,8 26,20 20,26 8,26 2,20 2,8" fill="#3CFF9A"></polygon><polygon points="10,8 18,8 20,10 20,18 18,20 10,20 8,18 8,10" fill="#E6FFF0" fill-opacity="0.45"></polygon><path d="M8 2l2 6M20 2l-2 6M26 8l-6 2M26 20l-6-2M20 26l-2-6M8 26l2-6M2 20l6-2M2 8l6 2" stroke="#06231A" stroke-width="1" fill="none"></path></svg>
+      <span class="em">Em</span><span class="name">フロンティア殿堂</span>
+    </a>
+    <nav class="nav" aria-label="メインメニュー">
+      <a href="./#board">記録表</a>
+      <a href="rules.html">掲載ルール</a>
+      <a href="about.html" aria-current="page">このサイトについて</a>
+      <a class="cta" href="#apply" data-apply>記録を申請する</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page wrap">
+  <h1>このサイトについて</h1>
+  <div class="prose">
+
+    <h2>サイトの目的</h2>
+    <p>Emフロンティア殿堂は、ポケモンエメラルドのバトルフロンティア7施設の記録表です。日本のプレイヤーが実機で達成した記録を、残しておける場所を作るために始めました。</p>
+    <p>載せるのは、正規のカートリッジと任天堂の本体で達成された記録だけです。</p>
+
+    <h2 id="apply">申請の方法</h2>
+    <p>各施設で金シンボルに届く記録から申請できます。申請フォームに答えていただくと、運営者が内容を確認して記録表に載せます。</p>
+    <p>掲載の条件と基準は、掲載ルールにまとめています。申請の前にご覧ください。</p>
+    <p><a class="textlink" href="rules.html">掲載ルールを読む</a></p>
+    <!-- 申請フォームのURL（assets/config.js の formUrl）が入ると、下のボタンが出て、「準備中」の文は消える。 -->
+    <p data-apply-ready hidden><a class="button" href="#apply" data-apply>記録を申請する</a></p>
+    <p data-apply-pending>申請フォームは準備中です。公開まで、しばらくお待ちください。</p>
+
+    <h2>運営者</h2>
+    <p>運営は、YouTubeチャンネル「<span data-channel>エメラルド・フロンティア研究室</span>」です。このサイトは、その姉妹サイトです。</p>
+
+    <h2>非公式のファンサイトです</h2>
+    <p>Emフロンティア殿堂は、個人が運営する非公式のファンサイトです。任天堂株式会社、株式会社ポケモン、株式会社ゲームフリーク、株式会社クリーチャーズとは関係ありません。</p>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Emフロンティア殿堂は、個人が運営する非公式のファンサイトです。任天堂株式会社、株式会社ポケモン、株式会社ゲームフリーク、株式会社クリーチャーズとは関係ありません。</p>
+    <div>
+      <div>運営：<span data-channel>エメラルド・フロンティア研究室</span></div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

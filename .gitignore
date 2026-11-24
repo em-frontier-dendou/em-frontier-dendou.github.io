@@ -1,0 +1,5 @@
+# 作業用のファイル。パソコンには残すが、GitHubには上げない。
+SPEC.md
+design-reference.html
+/sample.csv
+.claude/

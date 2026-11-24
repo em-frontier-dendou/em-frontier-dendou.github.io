@@ -1,0 +1,125 @@
+/* ==========================================================================
+   Emフロンティア殿堂の見た目。
+   前半は design-reference.html（承認済みの見本）の <style> をそのまま移したもの。
+   色・文字・余白の値を変えるときは、運営者に確認する。
+   ========================================================================== */
+:root {
+  --ground: #0A1411;
+  --line: #1F3A30;
+  --text: #E6FFF0;
+  --text-2: #C9E4D8;
+  --muted: #9BB8AC;
+  --accent: #3CFF9A;
+  --on-accent: #06231A;
+  --gold: #F0C75E;
+  --control-line: #55806F;
+  --badge-bg: #173D2E;
+  --badge-fg: #B8FFD9;
+  --badge-line: #7C9A8E;
+  --font-dot: 'DotGothic16', sans-serif;
+  --font-body: 'IBM Plex Sans JP', sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--font-body); line-height: 1.7; }
+a { color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+
+.site-header { border-bottom: 1px solid var(--line); }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 16px; padding-bottom: 16px; }
+.wordmark { display: flex; align-items: center; gap: 2px; min-height: 44px; text-decoration: none; font-family: var(--font-dot); line-height: 1; }
+.wordmark svg { flex: 0 0 auto; margin-right: 8px; }
+.wordmark .em { font-size: 24px; color: var(--accent); }
+.wordmark .name { font-size: 22px; letter-spacing: 0.04em; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.nav a { display: flex; align-items: center; min-height: 44px; text-decoration: none; font-size: 15px; }
+.nav a.cta { padding: 0 20px; border-radius: 4px; background: var(--accent); color: var(--on-accent); font-weight: 700; }
+
+.hero { padding-top: 64px; padding-bottom: 48px; }
+.hero .eyebrow { margin: 0 0 16px; font-size: 14px; letter-spacing: 0.12em; color: var(--muted); }
+.hero h1 { margin: 0 0 20px; font-family: var(--font-dot); font-size: 44px; line-height: 1.3; font-weight: 400; letter-spacing: 0.02em; }
+.hero .lead { margin: 0; max-width: 640px; font-size: 16px; color: var(--text-2); }
+
+.board { padding-bottom: 56px; }
+.facilities { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 24px; border-top: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 20px; }
+.filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.filter .label { margin-right: 4px; font-size: 13px; color: var(--muted); }
+.chip { min-height: 44px; padding: 0 16px; font-family: inherit; font-size: 15px; font-weight: 500; border-radius: 4px; cursor: pointer; background: transparent; color: var(--text); border: 1px solid var(--control-line); }
+.filter .chip { padding: 0 14px; font-size: 14px; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+.board-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-top: 40px; padding-bottom: 16px; }
+.board-head h2 { margin: 0; font-family: var(--font-dot); font-size: 26px; line-height: 1.4; font-weight: 400; }
+.board-head p { margin: 0; font-size: 14px; color: var(--muted); }
+
+.records { list-style: none; margin: 0; padding: 0; }
+.record { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--line); }
+.rank { flex: 0 0 52px; white-space: nowrap; }
+.rank .num { font-family: var(--font-dot); font-size: 30px; line-height: 1; }
+.rank .suffix { margin-left: 2px; font-size: 13px; }
+.rank.first { color: var(--gold); }
+.who { flex: 1 1 220px; min-width: 0; }
+.who .line1 { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; }
+.who .name { font-size: 18px; font-weight: 700; }
+.who .link { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; color: var(--text-2); font-size: 13px; }
+.who .team { font-size: 15px; color: var(--text-2); }
+.who .meta { font-size: 13px; color: var(--muted); }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; font-size: 13px; font-weight: 500; white-space: nowrap; }
+.badge.evidence { background: var(--badge-bg); color: var(--badge-fg); }
+.badge.self { border: 1px solid var(--badge-line); color: var(--text-2); }
+.badge.ongoing { border: 1px solid var(--gold); color: var(--gold); }
+a.badge { text-decoration: none; }
+.score { flex: 0 0 auto; min-width: 150px; margin-left: auto; text-align: right; white-space: nowrap; font-family: var(--font-dot); }
+.score .label { font-size: 13px; line-height: 1.4; letter-spacing: 0.1em; color: var(--muted); }
+.score .num { font-size: 40px; line-height: 1.1; color: var(--accent); }
+.score .unit { margin-left: 6px; font-size: 16px; color: var(--text-2); }
+
+.empty { padding: 48px 0; border-top: 1px solid var(--line); }
+.empty .title { margin: 0 0 8px; font-size: 18px; font-weight: 700; }
+.empty .body { margin: 0 0 24px; font-size: 15px; color: var(--text-2); }
+.empty a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 4px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; font-size: 15px; font-weight: 700; }
+
+.legend { margin-top: 16px; padding-top: 28px; border-top: 1px solid var(--line); }
+.legend h3 { margin: 0 0 16px; font-size: 14px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); }
+.legend dl { display: flex; flex-wrap: wrap; gap: 20px 32px; margin: 0; }
+.legend dl > div { flex: 1 1 240px; }
+.legend dd { margin: 8px 0 0; font-size: 14px; color: var(--text-2); }
+
+.site-footer { border-top: 1px solid var(--line); }
+.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 48px; padding-top: 32px; padding-bottom: 48px; font-size: 13px; color: var(--muted); }
+.site-footer p { flex: 1 1 420px; margin: 0; }
+
+/* ==========================================================================
+   ここから下は、見本にない部分の追加。色と文字は、上の値（--text など）だけを使う。
+   ========================================================================== */
+
+/* hidden をつけた要素は必ず隠す（display: flex の指定に負けないように）。 */
+[hidden] { display: none !important; }
+
+/* 記録表の「読み込み中…」と「読み込めませんでした」。空の表（.empty）と同じ位置に出す。 */
+.status { margin: 0; padding: 48px 0; border-top: 1px solid var(--line); font-size: 15px; color: var(--text-2); }
+.status.error { font-size: 18px; font-weight: 700; color: var(--text); }
+
+/* 小さなリンク（証拠ありの印、フッターの運営者名）の押せる範囲を、見た目を変えずに高さ44pxに広げる。 */
+a.badge, .site-footer a { position: relative; }
+a.badge::after, .site-footer a::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
+
+/* 掲載ルール、このサイトについて（文章のページ）。ドット文字は見出しだけ。 */
+.page { padding-top: 64px; padding-bottom: 56px; }
+.page h1 { margin: 0 0 20px; font-family: var(--font-dot); font-size: 36px; line-height: 1.3; font-weight: 400; letter-spacing: 0.02em; }
+.prose { max-width: 720px; font-size: 16px; color: var(--text-2); }
+.prose h2 { margin: 48px 0 16px; padding-top: 24px; border-top: 1px solid var(--line); font-family: var(--font-dot); font-size: 24px; line-height: 1.4; font-weight: 400; color: var(--text); scroll-margin-top: 16px; }
+.prose p { margin: 0 0 16px; }
+.prose ul, .prose ol { margin: 0 0 16px; padding-left: 1.5em; }
+.prose li { margin-bottom: 8px; }
+.prose li > ul { margin-top: 8px; margin-bottom: 0; }
+.prose strong { font-weight: 700; color: var(--text); }
+.prose .table-wrap { margin: 0 0 16px; overflow-x: auto; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.prose th, .prose td { padding: 10px 16px 10px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.prose th:last-child, .prose td:last-child { padding-right: 0; }
+.prose thead th { font-size: 13px; font-weight: 700; color: var(--muted); }
+.prose .button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 4px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; font-size: 15px; font-weight: 700; }
+.prose .textlink { display: inline-flex; align-items: center; min-height: 44px; }
