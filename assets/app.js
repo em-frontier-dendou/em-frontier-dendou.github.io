@@ -258,24 +258,42 @@ function currentFormat() {
   return currentFacility().hasDouble ? state.format : FORMATS[0];
 }
 
+// プレイヤーごとのページのURL。例：player.html?name=サンプルA
+function playerUrl(name) {
+  return 'player.html?' + new URLSearchParams({ name: name }).toString();
+}
+
 // 1件の記録（表の1行）を作る。
-function recordItem(r, index, facility) {
+// rank は順位（1から）。null なら記録表に出ない記録として「—」を出す。
+// プレイヤーのページでは showName を false にして、名前を出さない（見出しにあるため）。
+function recordItem(r, rank, facility, showName = true) {
   const li = el('li', 'record');
 
-  const rank = el('div', 'rank' + (index === 0 ? ' first' : ''));
-  rank.append(el('span', 'num', String(index + 1)), el('span', 'suffix', '位'));
+  const rankBox = el('div', 'rank' + (rank === 1 ? ' first' : '') + (rank === null ? ' off' : ''));
+  if (rank === null) {
+    const dash = el('span', 'num', '—');
+    dash.setAttribute('aria-hidden', 'true');
+    rankBox.append(dash, el('span', 'visually-hidden', '記録表には出ない記録'));
+  } else {
+    rankBox.append(el('span', 'num', String(rank)), el('span', 'suffix', '位'));
+  }
 
   const who = el('div', 'who');
   const line1 = el('div', 'line1');
-  line1.append(el('span', 'name', r.name));
+  if (showName) {
+    const name = el('a', 'name', r.name);
+    name.href = playerUrl(r.name);
+    line1.append(name);
+  }
   const link = safeUrl(r.link);
   if (link) {
     const a = el('a', 'link', '紹介リンク');
     makeExternal(a, link);
     line1.append(a);
   }
+  if (line1.childNodes.length > 0) who.append(line1);
   const meta = [formatDate(r.date), r.device].filter(Boolean).join('・');
-  who.append(line1, el('div', 'team', r.team), el('div', 'meta', meta));
+  who.append(el('div', 'team', r.team), el('div', 'meta', meta));
 
   const badges = el('div', 'badges');
   if (r.evidence === '証拠あり') {
@@ -298,7 +316,7 @@ function recordItem(r, index, facility) {
   row.append(el('span', 'num', String(r.record)), el('span', 'unit', facility.kana));
   score.append(el('div', 'label', r.status === '継続中' ? 'げんざい' : 'さいこう'), row);
 
-  li.append(rank, who, badges, score);
+  li.append(rankBox, who, badges, score);
   return li;
 }
 
@@ -331,7 +349,7 @@ function renderBoard() {
 
   status.hidden = true;
   const ranked = rankRecords(records, facility.name, format, state.level);
-  list.replaceChildren(...ranked.map((r, i) => recordItem(r, i, facility)));
+  list.replaceChildren(...ranked.map((r, i) => recordItem(r, i + 1, facility)));
   empty.hidden = ranked.length > 0;
   document.getElementById('empty-body').textContent = facility.line + '以上の実機記録をお持ちなら、最初の1件として載せられます。';
 }
@@ -363,16 +381,93 @@ function readStateFromUrl() {
   if (LEVELS.includes(level)) state.level = level;
 }
 
-// いまの区分をURLに書く（ページは読み込み直さない。「戻る」の履歴も増やさない）。
-function writeStateToUrl() {
+// 区分を「?f=…&m=…&l=…」の形にする。
+function boardQuery(facilityName, format, level) {
+  const facility = FACILITIES.find((f) => f.name === facilityName);
   const params = new URLSearchParams();
-  params.set(PARAM.facility, state.facility);
-  if (currentFacility().hasDouble) params.set(PARAM.format, currentFormat());
-  params.set(PARAM.level, state.level);
-  history.replaceState(null, '', location.pathname + '?' + params.toString() + location.hash);
+  params.set(PARAM.facility, facilityName);
+  if (facility.hasDouble) params.set(PARAM.format, format);
+  params.set(PARAM.level, level);
+  return '?' + params.toString();
 }
 
-/* ---------- 7. 申請ボタンと運営者名のリンク（全ページ共通） ---------- */
+// いまの区分をURLに書く（ページは読み込み直さない。「戻る」の履歴も増やさない）。
+function writeStateToUrl() {
+  history.replaceState(null, '', location.pathname + boardQuery(state.facility, currentFormat(), state.level) + location.hash);
+}
+
+/* ---------- 7. プレイヤーごとのページ（player.html） ---------- */
+
+// そのプレイヤーの全記録を、区分ごとに出す。記録表に出ない記録（同じ区分の2番目以降）も出す。
+// 区分の並びは、記録表のボタンと同じ（施設 → 形式 → レベル）。区分の中は記録の大きい順。
+function renderPlayer(name) {
+  const boards = document.getElementById('player-boards');
+  const status = document.getElementById('status');
+
+  if (records === null) {
+    status.textContent = loadFailed ? MESSAGE_FAILED : MESSAGE_LOADING;
+    status.classList.toggle('error', loadFailed);
+    return;
+  }
+
+  const mine = records.filter((r) => r.name === name);
+  if (mine.length === 0) {
+    status.textContent = name ? 'この名前の記録は見つかりませんでした。' : 'プレイヤーの名前が指定されていません。記録表の名前から開いてください。';
+    return;
+  }
+
+  status.hidden = true;
+  document.getElementById('player-name').textContent = name;
+  document.title = name + 'の記録｜Emフロンティア殿堂';
+  const summary = document.getElementById('player-summary');
+  summary.textContent = '記録 ' + mine.length + '件';
+  summary.hidden = false;
+  document.getElementById('player-note').hidden = false;
+
+  const sections = [];
+  for (const facility of FACILITIES) {
+    for (const format of facility.hasDouble ? FORMATS : [FORMATS[0]]) {
+      for (const level of LEVELS) {
+        const list = mine
+          .filter((r) => r.facility === facility.name && r.format === format && r.level === level)
+          .sort((a, b) => b.record - a.record || compareDate(a.date, b.date));
+        if (list.length === 0) continue;
+
+        // 記録表に出ている1件と、その順位。
+        const ranked = rankRecords(records, facility.name, format, level);
+        const rank = ranked.findIndex((r) => r.name === name) + 1;
+        const shown = ranked[rank - 1];
+
+        const section = el('section', 'player-board');
+        const head = el('div', 'board-head');
+        const title = [facility.name, facility.hasDouble ? format : null, level].filter(Boolean).join('・');
+        const toBoard = el('a', '', '記録表で見る（' + rank + '位）');
+        toBoard.href = './' + boardQuery(facility.name, format, level) + '#board';
+        const note = el('p');
+        note.append(toBoard);
+        head.append(el('h2', '', title), note);
+
+        const ol = el('ol', 'records');
+        ol.append(...list.map((r) => recordItem(r, r === shown ? rank : null, facility, false)));
+        section.append(head, ol);
+        sections.push(section);
+      }
+    }
+  }
+  boards.replaceChildren(...sections);
+}
+
+function startPlayer() {
+  const name = new URLSearchParams(location.search).get('name') || '';
+  renderPlayer(name); // まず「読み込み中…」を出す
+
+  loadRecords()
+    .then((list) => { records = list; })
+    .catch((error) => { loadFailed = true; console.error(error); })
+    .then(() => renderPlayer(name));
+}
+
+/* ---------- 8. 申請ボタンと運営者名のリンク（全ページ共通） ---------- */
 
 function setupLinks() {
   // 申請ボタン。formUrl が入っていれば、Googleフォームへの外部リンクにする。
@@ -395,7 +490,7 @@ function setupLinks() {
   }
 }
 
-/* ---------- 8. 起動 ---------- */
+/* ---------- 9. 起動 ---------- */
 
 function startBoard() {
   readStateFromUrl();
@@ -412,3 +507,4 @@ function startBoard() {
 
 setupLinks();
 if (document.getElementById('records')) startBoard(); // 記録表があるのはトップだけ
+if (document.getElementById('player-boards')) startPlayer(); // プレイヤーごとのページ

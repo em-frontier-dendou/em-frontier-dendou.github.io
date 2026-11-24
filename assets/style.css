@@ -123,3 +123,18 @@ a.badge::after, .site-footer a::after { content: ''; position: absolute; left: 0
 .prose thead th { font-size: 13px; font-weight: 700; color: var(--muted); }
 .prose .button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 4px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; font-size: 15px; font-weight: 700; }
 .prose .textlink { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* 記録表の名前。押すとプレイヤーごとのページを開く。下線は控えめにし、押せる範囲は高さ44pxに広げる。 */
+.who a.name { position: relative; text-decoration: underline; text-decoration-color: var(--control-line); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.who a.name:hover { text-decoration-color: var(--text); }
+.who a.name::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
+
+/* 画面には出さず、読み上げにだけ使う文字。 */
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* プレイヤーごとのページ（player.html）。 */
+.page .back { margin: -16px 0 8px; font-size: 14px; }
+.page .back a, .player-board .board-head a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-2); }
+.player-summary { margin: 0; font-size: 16px; color: var(--text-2); }
+.player-note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.rank.off { color: var(--muted); }
